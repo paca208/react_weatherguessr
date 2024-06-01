@@ -3,6 +3,7 @@ import './index.css';
 import GetTemp from './functions/GetTemp';
 import GetWebcamID from './functions/GetWebcamID.js';
 import GetWebcamFeed from './functions/GetWebcamFeed.js';
+import Game from './components/Game.jsx';
 
 
 const lat = 36.03;
@@ -18,6 +19,7 @@ function App() {
 const [tempData, setTempData] = useState(null);
 const [webcamID, setWebcamID] = useState(null);
 const [webcamFeed, setWebcamFeed] = useState(null);
+const [webcamTime, setWebcamTime] = useState()
 
 useEffect(() => {
   const fetchWebcamID = async () => {
@@ -35,6 +37,7 @@ useEffect(() => {
   const fetchWebcamFeed = async () => {
     const response = await GetWebcamFeed(webcamID, apiKey)
     setWebcamFeed(response.player.day);
+    setWebcamTime(response.lastUpdatedOn)
   }
 fetchWebcamFeed()
 },[webcamID])
@@ -48,18 +51,11 @@ fetchWebcamFeed()
 
   return (
     <>
-    <div className='w-screen h-screen bg-slate-100 flex flex-col justify-start items-center'>
+    <div className='w-screen h-screen min-h-screen bg-slate-100 flex flex-col justify-start items-center font-Reddit-mono'>
       <div id="tutorial-msg" className='flex flex-col items-center'>
         <span className='h-fit text-4xl font-semibold text-black mt-4 flex'>Welcome to Tempguessr</span>
-        <span className='text-black flex mt-4'>--tutorial msg--</span>
       </div>
-      <form action="" method="post" className='flex gap-4 mt-4'>
-        <input type="number" className='w-20' />
-        <button type="submit" className='bg-white rounded-md p-2 border'>Submit</button>
-      </form>
-      <div className='flex my-12 w-1/2 h-1/2'>
-        {webcamFeed ? <iframe src={webcamFeed} className='w-full h-full'></iframe> : 'loading...'}
-      </div>
+      <Game webcamFeed={webcamFeed} />
     </div>
     </>
   )
