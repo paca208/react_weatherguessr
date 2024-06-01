@@ -62,7 +62,12 @@ function Game( {webcamFeed} ) {
         {isPlaying ? (
             <>
                 <div className='flex my-12 w-1/2 h-1/2'>
-                    {webcamFeed ? <iframe src={webcamFeed} className='w-full h-full'></iframe> : 'loading...'}
+                    {webcamFeed ? (
+                    <div className='flex flex-col w-full'>
+                        <iframe src={webcamFeed} className='w-full h-full'></iframe>
+                        <span className='text-xs w-full text-right'>Webcams provided by <a href="https://www.windy.com/" target="_blank">windy.com</a> &mdash; <a href="https://www.windy.com/webcams/add" target="_blank">add a webcam.</a></span>
+                    </div>
+                    ) : 'loading...'}
                 </div>
                 <div className='my-4 flex flex-col items-center'>
                     {
