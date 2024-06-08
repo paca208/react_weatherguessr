@@ -1,47 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import GetTemp from './functions/GetTemp';
-import GetWebcamID from './functions/GetWebcamID.js';
 import GetWebcamFeed from './functions/GetWebcamFeed.js';
 import Game from './components/Game.jsx';
 
 
-const lat = 36.03;
-const lon = -114.53;
-const rad = 250;
-//tohle bych měl fetchovat z grcko BE x)
-
-const results = 1;
 const apiKey = 'zhghS00P2rYGG49RED2hVwENqxQl2y7I'
 
 function App() {
 
-const [tempData, setTempData] = useState(null);
+const [answerData, setAnswerData] = useState(null);
 const [webcamID, setWebcamID] = useState(null);
 const [webcamFeed, setWebcamFeed] = useState(null);
 const [webcamTime, setWebcamTime] = useState()
 
+
 useEffect(() => {
-  const fetchWebcamID = async () => {
-    const webcamdata = await GetWebcamID(results, lat, lon, rad, apiKey);
-    if (webcamdata.webcams.length > 0) {
-      setWebcamID(webcamdata.webcams[0].webcamId);
+  //Fetchuji webcamID z BE 
+  const fetchWebcamFeed = async () => {
+    try{
+      const response = await fetch('http://localhost:3000/GetWebcamID') // GRNCEK ENDPOINT
+      if (!response.ok) {
+        throw new Error('Failed to fetch temperature data');
+      }
+      const data = await response.json();
+      console.log("FE výsledky z volání GetWebcamID data: ",data)
+      console.log("FE výsledek data.webcamId je: ", data.webcamId)
+      setWebcamID(data.webcamId)
+      setAnswerData(data.temperature)
+      console.log("webcamId: ", webcamID)
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   }
-fetchWebcamID()
+fetchWebcamFeed()
 },[])
 
 useEffect(() => {
-  if (!webcamID) return;
-
-  const fetchWebcamFeed = async () => {
-    const response = await GetWebcamFeed(webcamID, apiKey)
-    setWebcamFeed(response.player.day);
-    setWebcamTime(response.lastUpdatedOn)
+  const getFeed = async () => {
+const webcamFeed = await GetWebcamFeed(webcamID, apiKey)
+setWebcamFeed(webcamFeed.player.day);
+setWebcamTime(webcamFeed.lastUpdatedOn)
   }
-fetchWebcamFeed()
-},[webcamID])
-
+  getFeed()
+},[webcamID,answerData])
 // GetTemp(setTempData)
 // const response = JSON.stringify(tempData)
 
@@ -55,7 +58,7 @@ fetchWebcamFeed()
       <div id="tutorial-msg" className='flex flex-col items-center'>
         <span className='h-fit text-4xl font-semibold text-black mt-4 flex'>Welcome to Tempguessr</span>
       </div>
-      <Game webcamFeed={webcamFeed} />
+      <Game webcamFeed={webcamFeed} correctAnswer={answerData} />
     </div>
     </>
   )

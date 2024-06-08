@@ -3,7 +3,7 @@ import { FaTemperatureFull } from "react-icons/fa6";
 import '../index.css';
 
 
-function Game( {webcamFeed} ) {
+function Game( {webcamFeed, correctAnswer} ) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [gameState, setGameState] = useState('playing');
     const [guess, setGuess] = useState('');
@@ -11,7 +11,6 @@ function Game( {webcamFeed} ) {
     const [feedback, setFeedback] = useState([]);
     const [healthbar, setHealthbar] = useState(8)
 
-    const correctAnswer = 32
     // Math.round(correctAnswer)
 
     const play = () => {
