@@ -1,7 +1,6 @@
 async function GetWebcamFeed(id, apikey){
     
   try{
-      console.log(id, apikey)
       const response = await fetch(`https://api.windy.com/webcams/api/v3/webcams/${id}?lang=en&include=player`, {
         headers: {
             "x-windy-api-key": apikey

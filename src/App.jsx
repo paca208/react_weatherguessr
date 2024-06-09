@@ -24,11 +24,8 @@ useEffect(() => {
         throw new Error('Failed to fetch temperature data');
       }
       const data = await response.json();
-      console.log("FE výsledky z volání GetWebcamID data: ",data)
-      console.log("FE výsledek data.webcamId je: ", data.webcamId)
       setWebcamID(data.webcamId)
       setAnswerData(data.temperature)
-      console.log("webcamId: ", webcamID)
     } catch (error) {
       console.error(error);
       return null;
@@ -37,14 +34,28 @@ useEffect(() => {
 fetchWebcamFeed()
 },[])
 
+// Tohle házelo všechny naše chyby, protože to fetchovalo milionkrát s prázdnýma variablama, tak to teď má podmínku :-)
 useEffect(() => {
-  const getFeed = async () => {
-const webcamFeed = await GetWebcamFeed(webcamID, apiKey)
-setWebcamFeed(webcamFeed.player.day);
-setWebcamTime(webcamFeed.lastUpdatedOn)
+  if (webcamID && apiKey){
+    const getFeed = async () => {
+    const webcamFeed = await GetWebcamFeed(webcamID, apiKey)
+    setWebcamFeed(webcamFeed.player.day);
+    setWebcamTime(webcamFeed.lastUpdatedOn)
+    }
+    getFeed()
   }
-  getFeed()
 },[webcamID,answerData])
+
+
+useEffect(() =>{
+  if (answerData && webcamID){
+    console.log("FE výsledky z volání GetWebcamID data: ", answerData)
+    console.log("FE výsledek data.webcamId je: ", webcamID)
+    console.log("webcamId: ", webcamID)
+  }
+},[answerData, webcamID])
+
+
 // GetTemp(setTempData)
 // const response = JSON.stringify(tempData)
 
@@ -58,7 +69,7 @@ setWebcamTime(webcamFeed.lastUpdatedOn)
       <div id="tutorial-msg" className='flex flex-col items-center'>
         <span className='h-fit text-4xl font-semibold text-black mt-4 flex'>Welcome to Tempguessr</span>
       </div>
-      <Game webcamFeed={webcamFeed} correctAnswer={answerData} />
+      <Game webcamFeed={webcamFeed} sentAnswer={answerData} />
     </div>
     </>
   )

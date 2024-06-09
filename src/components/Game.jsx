@@ -3,15 +3,19 @@ import { FaTemperatureFull } from "react-icons/fa6";
 import '../index.css';
 
 
-function Game( {webcamFeed, correctAnswer} ) {
+function Game( {webcamFeed, sentAnswer} ) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [gameState, setGameState] = useState('playing');
     const [guess, setGuess] = useState('');
     const [scale, setScale] = useState('°C');
     const [feedback, setFeedback] = useState([]);
-    const [healthbar, setHealthbar] = useState(8)
-
-    // Math.round(correctAnswer)
+    const [healthbar, setHealthbar] = useState(8);
+    const [correctAnswer, setCorrectAnswer] = useState(null)
+    
+    useEffect(() =>{
+        const rounded = Math.round(sentAnswer)
+        setCorrectAnswer(rounded);
+    },[sentAnswer])
 
     const play = () => {
         setIsPlaying(!isPlaying)
@@ -103,7 +107,6 @@ function Game( {webcamFeed, correctAnswer} ) {
     )}
     {gameState === 'loss' && (
        <div className='text-4xl my-auto pb-24 text-center'>You lost... The correct answer was {correctAnswer}{scale} <br /> Come back tomorrow for another challenge.</div>
-    //    Tady by měla být scale a odpověď od grncka ofc
     )}
     </>
   )
