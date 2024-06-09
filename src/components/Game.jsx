@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaTemperatureFull } from "react-icons/fa6";
+import { FaCalendarCheck } from "react-icons/fa";
+import { PiInfinityLight } from "react-icons/pi";
+import { IoSettingsOutline } from "react-icons/io5";
 import '../index.css';
+import euSvg from '../assets/europe.svg';
+import worldSvg from '../assets/world.svg'
 
 
 function Game( {webcamFeed, sentAnswer} ) {
@@ -10,7 +15,10 @@ function Game( {webcamFeed, sentAnswer} ) {
     const [scale, setScale] = useState('°C');
     const [feedback, setFeedback] = useState([]);
     const [healthbar, setHealthbar] = useState(8);
-    const [correctAnswer, setCorrectAnswer] = useState(null)
+    const [correctAnswer, setCorrectAnswer] = useState(null);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [playingLoc, setPlayingLoc] = useState('europe');
+    const [mode, setMode] = useState('infinite')
     
     useEffect(() =>{
         const rounded = Math.round(sentAnswer)
@@ -25,6 +33,15 @@ function Game( {webcamFeed, sentAnswer} ) {
     }
     const handleScaleChange = (e) =>{
         setScale(e.target.value)
+    }
+    const handleRegionSelect = (value) =>{
+        setPlayingLoc(value)
+    }
+    const handleModeSelect = (value) =>{
+        setMode(value)
+    }
+    const handleSettings = () =>{
+        setSettingsOpen(!settingsOpen)
     }
 
     const handleSubmit = (e) =>{
@@ -98,6 +115,41 @@ function Game( {webcamFeed, sentAnswer} ) {
                 <>
                     <span className='text-black flex mt-4 max-w-lg text-center text-lg'>This is a game in which you will be tasked to guess the temperature based on the provided webcam feed from the area. You will see a 24hour (or longer) feed but your goal is to only guess the FINAL temperature.</span>
                     <button onClick={play} className='font-bold text-3xl mt-4 cursor-pointer transition-all duration-150 hover:text-red-600'>PLAY</button>
+                    <span className='flex items-center gap-2 mt-24 text-3xl font-bold cursor-pointer transition-all hover:scale-105' onClick={handleSettings}>Settings <IoSettingsOutline /> </span>
+                    {settingsOpen && 
+                    <>
+                    <span className='my-6 text-xl font-bold'>Region</span>
+                    <div className='flex gap-6'>
+                        <button onClick={() => handleRegionSelect('europe')} className={`flex items-center flex-col gap-4 border-2 p-6 rounded-lg transition-all hover:border-blue-200 ${playingLoc === 'europe' ? 'border-blue-200' : 'border-gray-200'}`}>
+                            <div className='w-44 h-44 rounded-xl'>
+                                <img src={euSvg} alt="europe" />
+                            </div>
+                            <span>Europe</span>
+                        </button>
+                        <button className={`flex items-center justify-center flex-col gap-4 border-2 p-6 rounded-lg transition-all cursor-not-allowed`}>
+                            <div className='w-44 h-44 rounded-xl'>
+                                <img src={worldSvg} alt="Global" className='w-full h-full object-cover'/>
+                            </div>
+                            <span className='flex'>Global</span>
+                        </button>
+                    </div>
+                    <span className='my-6 text-xl font-bold'>Mode</span>
+                    <div className='flex gap-6'>
+                        <button onClick={() => handleModeSelect('infinite')} className={`flex items-center flex-col gap-4 border-2 p-6 rounded-lg transition-all hover:border-blue-200 ${mode === 'infinite' ? 'border-blue-200' : 'border-gray-200'}`}>
+                            <div className='flex items-center justify-center w-44 h-44 rounded-xl'>
+                                <PiInfinityLight className='w-32 h-32 text-zinc-400' />
+                            </div>
+                            <span className='flex'>Infinite</span>
+                        </button>
+                        <button className={`flex items-center justify-center flex-col gap-4 border-2 p-6 rounded-lg transition-all cursor-not-allowed`}>
+                            <div className='flex items-center justify-center w-44 h-44 rounded-xl'>
+                                <FaCalendarCheck className='w-32 h-32 text-zinc-400' />
+                            </div>
+                            <span>Daily Challenge</span>
+                        </button>
+                    </div>
+                    </>
+                    }
                 </>
         )}
     </>

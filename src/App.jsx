@@ -65,7 +65,7 @@ useEffect(() =>{
 
   return (
     <>
-    <div className='w-screen h-screen min-h-screen bg-slate-100 flex flex-col justify-start items-center font-Reddit-mono'>
+    <div className='w-full h-full min-w-screen min-h-screen bg-slate-100 flex flex-col justify-start items-center font-Reddit-mono'>
       <div id="tutorial-msg" className='flex flex-col items-center'>
         <span className='h-fit text-4xl font-semibold text-black mt-4 flex'>Welcome to Tempguessr</span>
       </div>
