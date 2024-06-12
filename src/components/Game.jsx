@@ -6,9 +6,10 @@ import { IoSettingsOutline } from "react-icons/io5";
 import '../index.css';
 import euSvg from '../assets/europe.svg';
 import worldSvg from '../assets/world.svg'
+import Button from './Button';
 
 
-function Game( {webcamFeed, sentAnswer} ) {
+function Game( {webcamFeed, sentAnswer, username} ) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [gameState, setGameState] = useState('playing');
     const [guess, setGuess] = useState('');
@@ -106,7 +107,7 @@ function Game( {webcamFeed, sentAnswer} ) {
                             <option value="°C">°C</option>
                             <option value="°F">°F</option>
                         </select>
-                        <button type="submit" className='bg-white rounded-md p-2 border transition-all duration-200 hover:bg-slate-200 ml-8'>Enter guess</button>
+                        <Button isSubmit={true} text={'Enter guess'} />
                     </form>
                 </div> 
                 <span className='flex text-xl mt-4'>Attempts remaining: {healthbar}</span>
@@ -155,7 +156,7 @@ function Game( {webcamFeed, sentAnswer} ) {
     </>
     )}
     {gameState === 'victory' && (
-        <div className='text-4xl my-auto pb-24 text-center'>{guess}{scale} is exactly right, you win!<br /> Come back tomorrow for another challenge.</div>
+        <div className='text-4xl my-auto pb-24 text-center'>{guess}{scale} is exactly right {username}, you win!<br /> Come back tomorrow for another challenge.</div>
     )}
     {gameState === 'loss' && (
        <div className='text-4xl my-auto pb-24 text-center'>You lost... The correct answer was {correctAnswer}{scale} <br /> Come back tomorrow for another challenge.</div>
