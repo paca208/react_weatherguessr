@@ -69,7 +69,7 @@ useEffect(() =>{
       <div id="tutorial-msg" className='grid grid-cols-3 w-full justify-items-center items-center'>
         <span></span>
         <span className='text-4xl font-semibold text-black mt-4 text-center'>Welcome to Tempguessr</span>
-        <span className='flex ml-auto gap-2 mr-4 cursor-pointer transition-all hover:scale-105'>{username ? (<><FaRegUserCircle className='w-6 h-6' /> {username}</>) : <Link className='flex gap-2' to={'signin'}><FaRegUserCircle className='w-6 h-6' /> Sign up</Link>}</span>
+        <span className='flex ml-auto gap-2 mr-4 cursor-pointer transition-all hover:scale-105'>{username ? (<><FaRegUserCircle className='w-6 h-6' /> {username}</>) : <Link className='flex gap-2' to={'signup'}><FaRegUserCircle className='w-6 h-6' /> Sign up</Link>}</span>
       </div>
       <Game webcamFeed={webcamFeed} sentAnswer={answerData} username={username}/>
     </div>
