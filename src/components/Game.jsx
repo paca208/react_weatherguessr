@@ -9,10 +9,10 @@ import worldSvg from '../assets/world.svg'
 import Button from './Button';
 
 
-function Game( {webcamFeed, sentAnswer, username} ) {
+function Game( {webcamFeed, sentAnswer, username, modeData} ) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [gameState, setGameState] = useState('playing');
-    const [guess, setGuess] = useState('');
+    const [guess, setGuess] = useState('')
     const [scale, setScale] = useState('°C');
     const [feedback, setFeedback] = useState([]);
     const [healthbar, setHealthbar] = useState(8);
@@ -39,7 +39,8 @@ function Game( {webcamFeed, sentAnswer, username} ) {
         setPlayingLoc(value)
     }
     const handleModeSelect = (value) =>{
-        setMode(value)
+        setMode(value);
+        modeData(value);
     }
     const handleSettings = () =>{
         setSettingsOpen(!settingsOpen)
@@ -142,7 +143,7 @@ function Game( {webcamFeed, sentAnswer, username} ) {
                             </div>
                             <span className='flex'>Infinite</span>
                         </button>
-                        <button className={`flex items-center justify-center flex-col gap-4 border-2 p-6 rounded-lg transition-all cursor-not-allowed`}>
+                        <button onClick={() => handleModeSelect('daily')} className={`flex items-center justify-center flex-col gap-4 border-2 p-6 rounded-lg transition-all cursor-pointer hover:border-blue-200 ${mode === 'daily' ? 'border-blue-200' : 'border-gray-200'}`}>
                             <div className='flex items-center justify-center w-44 h-44 rounded-xl'>
                                 <FaCalendarCheck className='w-32 h-32 text-zinc-400' />
                             </div>
